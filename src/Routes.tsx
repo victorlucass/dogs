@@ -8,7 +8,7 @@ export function RoutesApp() {
     <Routes>
       <Route path="/" element={<LayoutDefault />}>
         <Route path="/" element={<Home />} />
-        <Route path="login" element={<Login />} />
+        <Route path="/login/*" element={<Login />} />
       </Route>
     </Routes>
   );
