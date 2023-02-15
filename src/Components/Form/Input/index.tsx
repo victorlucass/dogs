@@ -1,9 +1,10 @@
 import React, { InputHTMLAttributes, LabelHTMLAttributes } from "react";
-import { InputContainer } from "./styled";
+import { ErroMessage, InputContainer } from "./styled";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   name: string;
+  error: string | undefined;
 };
 
 export const InputForm = React.forwardRef<HTMLInputElement, InputProps>(
@@ -12,7 +13,7 @@ export const InputForm = React.forwardRef<HTMLInputElement, InputProps>(
       <InputContainer>
         <label htmlFor={props.name}>{props.label}</label>
         <input ref={ref} id={props.name} {...props} />
-        <p>Erro</p>
+        {props.error && <ErroMessage>{props.error}</ErroMessage>}
       </InputContainer>
     );
   }

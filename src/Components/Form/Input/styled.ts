@@ -10,7 +10,7 @@ export const InputContainer = styled.div`
     padding: 0.8rem;
     border-radius: 0.4rem;
     background: #eee;
-    transition: 0.1s;
+    transition: 0.2s;
     &:hover,
     &:focus {
       outline: none;
@@ -26,9 +26,9 @@ export const InputContainer = styled.div`
     line-height: 1;
     padding-bottom: 0.5rem;
   }
-  p {
-    color: #f31;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-  }
+`;
+export const ErroMessage = styled.p`
+  color: #f31;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 `;
