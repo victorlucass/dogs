@@ -14,23 +14,23 @@ export function UserStorage({ children }: UserStorageProps) {
   const [error, setError] = useState(null);
 
   async function getUser(token: string) {
-    const response = await api.get("api/user", {
+    const userApi = await api.get("api/user", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    setData(response.data);
+    setData(userApi.data);
     setLogin(true);
   }
 
   async function userLogin(data: Login) {
-    const response = await api.post("jwt-auth/v1/token", data, {
+    const tokenApi = await api.post("jwt-auth/v1/token", data, {
       headers: {
         "Content-Type": "application/json",
       },
     });
-    window.localStorage.setItem("token", response.data.token);
-    getUser(response.data.token);
+    window.localStorage.setItem("token", tokenApi.data.token);
+    getUser(tokenApi.data.token);
   }
   return (
     <UserContext.Provider value={{ userLogin, data }}>
