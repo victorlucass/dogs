@@ -1,54 +1,64 @@
-import { Link } from "react-router-dom";
-import { LoginFormContainer } from "./styled";
-import { useForm } from "react-hook-form";
-import { Login } from "../Login.model";
-import { api } from "../../../api";
+import { useNavigate } from "react-router-dom";
+import {
+  ContentLosePassword,
+  Form,
+  LinkLosePassword,
+  LoginFormContainer,
+} from "./styled";
 import { InputForm } from "../../../Components/Form/Input";
 import { ButtonForm } from "../../../Components/Form/Button";
-import * as zod from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { UserContext } from "../../../context/UserContext";
-//---------------------
-const LoginFormSchema = zod.object({
-  username: zod.string().min(1, "*obrigatório"),
-  password: zod.string().min(1, "*obrigatório"),
-});
-//---------------------
-export function LoginForm() {
-  const { register, handleSubmit, watch, formState } = useForm<Login>({
-    mode: "onBlur",
-    resolver: zodResolver(LoginFormSchema),
-  });
-  const { errors } = formState;
-  const { userLogin } = useContext(UserContext);
+import { Error } from "../../../Components/Helpers/Error";
+import { Title } from "../../../Components/StylesComponents/styled";
+import useForm from "../../../hooks/useForm";
+import { Login } from "../Login.model";
 
-  async function handleSubmitForm(data: Login) {
-    if (data) {
-      userLogin(data);
+export function LoginForm() {
+  const username = useForm();
+  const password = useForm();
+  const { userLogin, error, loading } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  async function handleSubmitForm(event: React.SyntheticEvent<EventTarget>) {
+    event.preventDefault();
+    const data: Login = {
+      username: username.value,
+      password: password.value,
+    };
+    if (username.validate() && password.validate()) {
+      await userLogin(data);
     }
   }
 
   return (
-    <LoginFormContainer>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit(handleSubmitForm)}>
+    <LoginFormContainer className="animeLeft">
+      <Title>Login</Title>
+      <Form onSubmit={handleSubmitForm}>
+        <InputForm label="Usuário" type="text" name="username" {...username} />
         <InputForm
-          label="Username"
-          type="text"
-          min={2}
-          error={errors.username?.message}
-          {...register("username")}
+          label="Senha"
+          type="password"
+          name="password"
+          {...password}
         />
-        <InputForm
-          label="password"
-          type="text"
-          {...register("password")}
-          error={errors.password?.message}
+        <ButtonForm
+          disabled={loading}
+          label={loading ? "carregando..." : "Entrar"}
+          type="submit"
         />
-        <ButtonForm label="Enviar" type="submit" />
-      </form>
-      <Link to="/login/criar">Cadastro</Link>
+        <Error error={error} />
+      </Form>
+      <LinkLosePassword to="/login/perdeu">Perdeu a Senha?</LinkLosePassword>
+      <ContentLosePassword>
+        <h2>Cadastre-se</h2>
+        <p>Ainda não possui conta? Cadastre-se no site.</p>
+        <ButtonForm
+          style={{ marginTop: "4rem" }}
+          label="cadastro"
+          onClick={() => navigate("criar")}
+        />
+      </ContentLosePassword>
     </LoginFormContainer>
   );
 }

@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../api";
 import { Login } from "../Pages/Login/Login.model";
 
@@ -10,8 +11,12 @@ interface UserStorageProps {
 export function UserStorage({ children }: UserStorageProps) {
   const [data, setData] = useState(null);
   const [login, setLogin] = useState(false);
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    autoLogin();
+  }, []);
 
   async function getUser(token: string) {
     const userApi = await api.get("api/user", {
@@ -24,16 +29,63 @@ export function UserStorage({ children }: UserStorageProps) {
   }
 
   async function userLogin(data: Login) {
-    const tokenApi = await api.post("jwt-auth/v1/token", data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    window.localStorage.setItem("token", tokenApi.data.token);
-    getUser(tokenApi.data.token);
+    try {
+      setError(null);
+      setLoading(true);
+      const tokenApi = await api.post("jwt-auth/v1/token", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (tokenApi.status !== 200) throw new Error("erro personalizado");
+      window.localStorage.setItem("token", tokenApi.data.token);
+      await getUser(tokenApi.data.token);
+    } catch (error: any) {
+      const { response } = error;
+      setError(response.data.message);
+      setLogin(false);
+    } finally {
+      setLoading(false);
+    }
   }
+
+  async function autoLogin() {
+    const tokenLocal = window.localStorage.getItem("token");
+    if (tokenLocal) {
+      try {
+        setLoading(true);
+        const { data, status } = await api.post(
+          "jwt-auth/v1/token/validate",
+          tokenLocal,
+          {
+            headers: {
+              Authorization: `Bearer ${tokenLocal}`,
+            },
+          }
+        );
+        if (status !== 200) throw new Error("Token inválido ou expirado");
+        await getUser(tokenLocal);
+      } catch (error) {
+        console.log(error);
+        userLogout();
+      } finally {
+        setLoading(false);
+      }
+    }
+  }
+
+  async function userLogout() {
+    setData(null);
+    setError(null);
+    setLoading(false);
+    setLogin(false);
+    window.localStorage.removeItem("token");
+  }
+
   return (
-    <UserContext.Provider value={{ userLogin, data }}>
+    <UserContext.Provider
+      value={{ userLogin, userLogout, data, loading, login, error }}
+    >
       {children}
     </UserContext.Provider>
   );

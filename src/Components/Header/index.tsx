@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 
 export function Header() {
-  const { data } = useContext(UserContext);
+  const { data, userLogout } = useContext(UserContext);
   return (
     <HeaderContainer>
       <HeaderNavContainer>
@@ -13,9 +13,12 @@ export function Header() {
           <img src={Dogs} alt="" />
         </Link>
         {data ? (
-          <Link to="/conta" className="login">
-            {data.nome}
-          </Link>
+          <>
+            <Link to="/conta" className="login">
+              {data.nome}
+            </Link>
+            <button onClick={userLogout}>sair</button>
+          </>
         ) : (
           <Link to="/login" className="login">
             Login / Criar

@@ -34,5 +34,18 @@ export const GlobalStyled = createGlobalStyle`
   }
   a {
     text-decoration: none;
+    color: #333;
+  }
+  .animeLeft {
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: animeLeft .3s forwards;
+  }
+
+  @keyframes animeLeft {
+    to{
+      opacity: 1;
+      transform: initial;
+    }
   }
 `;
