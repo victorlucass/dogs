@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { ProtectedRoute } from "./Components/Helpers/ProtectedRoute";
 import { LayoutDefault } from "./Layout/default";
 import { Account } from "./Pages/Account";
 import { Home } from "./Pages/Home";
@@ -9,7 +10,14 @@ export function RoutesApp() {
     <Routes>
       <Route path="/" element={<LayoutDefault />}>
         <Route path="/" element={<Home />} />
-        <Route path="/conta" element={<Account />} />
+        <Route
+          path="/conta"
+          element={
+            <ProtectedRoute>
+              <Account />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login/*" element={<Login />} />
       </Route>
     </Routes>
