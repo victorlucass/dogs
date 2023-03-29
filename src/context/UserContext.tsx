@@ -13,11 +13,6 @@ export function UserStorage({ children }: UserStorageProps) {
   const [login, setLogin] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    autoLogin();
-  }, []);
-
   async function getUser(token: string) {
     const userApi = await api.get("api/user", {
       headers: {
@@ -81,6 +76,10 @@ export function UserStorage({ children }: UserStorageProps) {
     setLogin(false);
     window.localStorage.removeItem("token");
   }
+
+  useEffect(() => {
+    autoLogin();
+  }, []);
 
   return (
     <UserContext.Provider

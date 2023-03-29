@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import usuario from "../../assets/usuario.svg";
 
 export const HeaderContainer = styled.header`
