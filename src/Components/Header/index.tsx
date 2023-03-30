@@ -23,7 +23,6 @@ export function Header() {
             <Link to="/conta" className="login">
               {data.nome}
             </Link>
-            <button onClick={handleLogout}>sair</button>
           </>
         ) : (
           <Link to="/login" className="login">

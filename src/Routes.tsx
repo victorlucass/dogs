@@ -11,7 +11,7 @@ export function RoutesApp() {
       <Route path="/" element={<LayoutDefault />}>
         <Route path="/" element={<Home />} />
         <Route
-          path="/conta"
+          path="/conta/*"
           element={
             <ProtectedRoute>
               <Account />
