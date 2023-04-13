@@ -15,6 +15,7 @@ export function UserHeaderNav() {
   return (
     <UserHeaderNavStyled>
       <NavLink to="/conta" end>
+        {/* 'end' é uma maneira de definir a url principal, para evitar de activar todos que comecem com 'conta/*' */}
         <FeedSvg />
         {isMobile && "Minhas Fotos"}
       </NavLink>
