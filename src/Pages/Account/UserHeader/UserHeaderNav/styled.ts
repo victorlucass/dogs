@@ -44,6 +44,14 @@ export const UserHeaderNavStyled = styled.nav`
       border-bottom: 1px solid #eee;
       padding: 0.5rem 0;
       cursor: pointer;
+      &:hover,
+      &:focus,
+      &.active {
+        background: transparent;
+        box-shadow: none;
+        border-color: none;
+        outline: none;
+      }
     }
     button {
       border-bottom: none;
