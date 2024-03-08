@@ -3,8 +3,11 @@ import { ErroMessage, InputContainer } from "./styled";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
+  error?: string;
   name: string;
-  error?: string | undefined;
+  value: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 };
 
 export function InputForm({
@@ -15,7 +18,7 @@ export function InputForm({
   onChange,
   error,
   onBlur,
-}: any) {
+}: InputProps) {
   return (
     <InputContainer>
       <label htmlFor={name}>{label}</label>
