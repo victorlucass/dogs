@@ -1,9 +1,12 @@
-import { HomeContainer } from "./styled";
+import { Feed } from "../../Components/Feed";
+import { HomeContainer, MainContainer } from "./styled";
 
 export function Home() {
   return (
     <HomeContainer>
-      <span>Home</span>
+      <MainContainer>
+        <Feed />
+      </MainContainer>
     </HomeContainer>
   );
 }
