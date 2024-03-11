@@ -6,7 +6,11 @@ import { Loading } from "../../Helpers/Loading";
 import { PhotosProps } from "./photo";
 import { FeedPhotosContainer } from "./styled";
 
-export function FeedPhotos() {
+export function FeedPhotos({
+  setModalPhoto,
+}: {
+  setModalPhoto: React.Dispatch<React.SetStateAction<PhotosProps>>;
+}) {
   const { data, error, loading, request } = useFetchAxios();
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(6);
@@ -33,7 +37,11 @@ export function FeedPhotos() {
     return (
       <FeedPhotosContainer className="animeLeft">
         {photos.map((photo: PhotosProps) => (
-          <FeedPhotosItem key={photo.id} photo={photo} />
+          <FeedPhotosItem
+            key={photo.id}
+            photo={photo}
+            setModalPhoto={setModalPhoto}
+          />
         ))}
       </FeedPhotosContainer>
     );
