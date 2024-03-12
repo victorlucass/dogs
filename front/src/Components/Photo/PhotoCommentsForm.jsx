@@ -1,35 +1,37 @@
-import React from 'react';
-import Enviar from '../../Assets/enviar.svg';
-import useFetch from '../../Hooks/useFetch';
-import Error from '../Helper/Error';
-import { COMMENT_POST } from '../../Api';
+import React from "react";
+import useFetch from "../../Hooks/useFetch";
+import Error from "../Helper/Error";
+import { COMMENT_POST } from "../../Api";
+import styles from "./PhotoCommentsForm.module.css";
+import { EnviarSvg } from "../../Assets/EnviarSvg";
 
 const PhotoCommentsForm = ({ id, setComments }) => {
-  const [comment, setComment] = React.useState('');
+  const [comment, setComment] = React.useState("");
   const { request, error } = useFetch();
 
   async function handleSubmit(event) {
     event.preventDefault();
     const { url, options } = COMMENT_POST(id, { comment });
     const { response, json } = await request(url, options);
-    console.log(json);
+    // console.log(json);
     if (response.ok) {
-      setComment('');
+      setComment("");
       setComments((comments) => [...comments, json]);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <textarea
+        className={styles.textarea}
         id="comment"
         name="comment"
         placeholder="Comente..."
         value={comment}
         onChange={({ target }) => setComment(target.value)}
       />
-      <button>
-        <img src={Enviar} alt="" />
+      <button className={styles.button}>
+        <EnviarSvg />
       </button>
       <Error error={error} />
     </form>
