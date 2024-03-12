@@ -6,7 +6,7 @@ import { Error } from "../../Helpers/Error";
 import { Loading } from "../../Helpers/Loading";
 import { PhotoContent } from "../../Photo/PhotoContent";
 
-export function FeedModal({ photo }: any) {
+export function FeedModal({ photo, setModalPhoto }: any) {
   const { data, error, loading, request } = useFetchAxios();
   const [photoItem, setPhotoItem] = useState<any>();
   async function getPhoto() {
@@ -17,12 +17,18 @@ export function FeedModal({ photo }: any) {
     setPhotoItem(response?.data);
   }
 
+  function handleOutsideClick(event: any) {
+    if (event.target === event.currentTarget) {
+      setModalPhoto({ id: 0 });
+    }
+  }
+
   useEffect(() => {
     getPhoto();
   }, [photo]);
 
   return (
-    <FeedModalContainer>
+    <FeedModalContainer onClick={handleOutsideClick}>
       {error && <Error error={error} />}
       {loading && <Loading />}
       {data && <PhotoContent data={data} />}

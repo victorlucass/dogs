@@ -17,7 +17,9 @@ export function Feed() {
   });
   return (
     <div>
-      {modalPhoto.id !== 0 && <FeedModal photo={modalPhoto} />}
+      {modalPhoto.id !== 0 && (
+        <FeedModal photo={modalPhoto} setModalPhoto={setModalPhoto} />
+      )}
       <FeedPhotos setModalPhoto={setModalPhoto} />
     </div>
   );
