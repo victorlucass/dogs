@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./UserStatsGraphs.module.css";
 import { VictoryPie, VictoryChart, VictoryBar } from "victory";
 
-export function UserStatsGraphs({ data }) {
+function UserStatsGraphs_({ data }) {
   const [graph, setGraph] = React.useState([]);
   const [total, setTotal] = React.useState(0);
 
@@ -51,3 +51,5 @@ export function UserStatsGraphs({ data }) {
     </section>
   );
 }
+
+export const UserStatsGraphs = React.memo(UserStatsGraphs_);
